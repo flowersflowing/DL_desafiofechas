@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Cronometro/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Cronometro from './components/Cronometro.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Cronometro
   }
 }
 </script>
