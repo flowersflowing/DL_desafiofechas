@@ -2,14 +2,10 @@
   <div class="crono">
     <h3>Cuenta regresiva</h3>
     <div>
-      <!-- Agregar un div que muestre la cuenta regresiva con v-show o if. Debe mostrar {{timer.tiempo}}.-->
-      <div></div>
-      <!-- Debo agregar un click a mis botones que llamen al método -->
-      <button class="btn" @click="setUpTimer(3000)">3s</button>
-      <button class="btn" @click="setUpTimer(60000)">1m</button>
-      <button class="btn" @click="setUpTimer(300000)">5m</button>
-      <button class="btn" @click="setUpTimer(600000)">10m</button>
-      <button class="btn" @click="setUpTimer(1800000)">30m</button>      
+      <!-- mostrar conteo en el DOM -->
+      <p>{{mostrarCuenta(tiempo)}}</p>
+      <!-- Debo agregar un for in para llamar a cada objeto el array por cada botón y que llame al método que setea el intervalo -->
+      <button class="btn" v-for="tpo in timers" :key="tpo" @click="contador(tpo.set)">{{tpo.nombre}}</button>
     </div>
   </div>
 </template>
@@ -19,21 +15,40 @@ export default {
   name: 'Cronometro',
   data() {
     return {
+      tiempo: 0,
+      intervalo: '',
+      estado: {
+        activo:false,
+      },
       timers: [
-      //Agregar los arrays
-        {nombre: '3', tiempo: '00:03'},
-        {nombre: '1', tiempo: '01:00'},
-        {nombre: '5', tiempo: '05:00'},
-        {nombre: '10', tiempo: '10:00'},
-        {nombre: '30', tiempo: '30:00'},
-      ]
+        {nombre: '3s', set: 3},
+        {nombre: '1m', set: 60},
+        {nombre: '5m', set: 300},
+        {nombre: '10m', set: 600},
+        {nombre: '30m', set: 1800},
+      ],
+
     }
   },
-  // Agregar método para la cuenta regresiva. Almacenar y pasar la variable. Agregar booliano para que se active el v-show
-  methods: {
-    setUpTimer(ms){
-      console.log(ms); //entrando
-    }    
+  // Agregar método para la cuenta regresiva. Almacenar y pasar las variables de minutos y segundos. Ocupar el setInterval de JS. Restar el tiempo.
+  methods: {  
+    mostrarCuenta: function (tiempo) {
+      let segundos = ('0' + tiempo%60).slice(-2);
+      let minutos = ('0' + Math.floor(tiempo/60)).slice(-2);
+      return `${minutos}:${segundos}`
+    },
+    contador: function (setTime) {
+      this.tiempo = setTime;
+      this.estado.activo = true;
+      this.intervalo = setInterval(() => {
+        if (this.tiempo > 0) {
+          this.tiempo --;
+        }
+        else {
+          clearInterval(this.intervalo)
+        }
+      }, 1200);
+    }
   },
 }
 </script>
